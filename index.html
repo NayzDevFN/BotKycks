@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kycks - Bot Discord</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="paper-texture"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks" class="nav-logo-img" onerror="this.src='assets/avatar.svg'">
+    <div class="nav-logo">KycksBot</div>
+  </div>
+  <div class="nav-links">
+    <a href="#features" class="nav-link">Fonctionnalités</a>
+    <a href="#commands" class="nav-link">Commandes</a>
+    <a href="panel.html" class="nav-link">Panel</a>
+    <a href="#support" class="nav-link">Support</a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1544851212187340881&scope=bot%20applications.commands&permissions=8" class="nav-link nav-invite" target="_blank">+ Inviter</a>
+  </div>
+  <div class="nav-right">
+    <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks Bot" class="nav-avatar" onerror="this.src='assets/avatar.svg'">
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header id="home">
+  <div class="doodle star-doodle">★</div>
+  <div class="doodle heart-doodle">♥</div>
+  <div class="doodle spiral-doodle">✿</div>
+  <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks" class="header-avatar" onerror="this.src='assets/avatar.svg'">
+  <h1 class="logo">Kycks</h1>
+  <p class="tagline">~ ton bot discord préféré ~</p>
+  <div class="invite-btn-container">
+    <a href="https://discord.com/oauth2/authorize?client_id=1544851212187340881&scope=bot%20applications.commands&permissions=8" class="invite-btn" target="_blank">+ Inviter le Bot</a>
+  </div>
+  <div class="header-stats">
+    <div class="stat-box"><span class="stat-number" id="statServers">-</span><span class="stat-label">Serviteurs</span></div>
+    <div class="stat-box"><span class="stat-number" id="statUsers">-</span><span class="stat-label">Utilisateurs</span></div>
+    <div class="stat-box"><span class="stat-number">70+</span><span class="stat-label">Commandes</span></div>
+  </div>
+</header>
+
+<!-- FONCTIONNALITÉS -->
+<section id="features">
+  <h2 class="section-title">Ce qu'il fait</h2>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Modération</h3><p>Ban, kick, mute, warn, tempban, slowmode...</p></div>
+    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Automod</h3><p>Anti-spam, anti-liens, mots interdits, anti-raid</p></div>
+    <div class="feature-card"><div class="feature-icon">🎫</div><h3>Tickets</h3><p>Système de tickets (Ticketool)</p></div>
+    <div class="feature-card"><div class="feature-icon">🎵</div><h3>Musique</h3><p>YouTube, Spotify, SoundCloud...</p></div>
+    <div class="feature-card"><div class="feature-icon">📈</div><h3>Niveaux</h3><p>Système XP, niveaux, rôles récompenses</p></div>
+    <div class="feature-card"><div class="feature-icon">💾</div><h3>Backup & Nuke</h3><p>Sauvegarde/restore des salons, nuke serveur</p></div>
+    <div class="feature-card"><div class="feature-icon">📋</div><h3>Logs</h3><p>Messages, membres, vocaux, modération</p></div>
+    <div class="feature-card"><div class="feature-icon">⭐</div><h3>Starboard</h3><p>Messages étoilés automatiques</p></div>
+  </div>
+</section>
+
+<!-- COMMANDES -->
+<section id="commands">
+  <h2 class="section-title">Commandes</h2>
+  <div class="commands-grid">
+    <div class="cmd-card"><span class="cmd-name">/help</span><span class="cmd-desc">Liste des commandes</span></div>
+    <div class="cmd-card"><span class="cmd-name">/ban</span><span class="cmd-desc">Bannir un membre</span></div>
+    <div class="cmd-card"><span class="cmd-name">/kick</span><span class="cmd-desc">Expulser un membre</span></div>
+    <div class="cmd-card"><span class="cmd-name">/mute</span><span class="cmd-desc">Mute un membre</span></div>
+    <div class="cmd-card"><span class="cmd-name">/warn</span><span class="cmd-desc">Avertir un membre</span></div>
+    <div class="cmd-card"><span class="cmd-name">/tempban</span><span class="cmd-desc">Ban temporaire</span></div>
+    <div class="cmd-card"><span class="cmd-name">/softban</span><span class="cmd-desc">Softban (nettoyer)</span></div>
+    <div class="cmd-card"><span class="cmd-name">/nuke</span><span class="cmd-desc">Nuke le serveur</span></div>
+    <div class="cmd-card"><span class="cmd-name">/backup</span><span class="cmd-desc">Sauvegarder le serveur</span></div>
+    <div class="cmd-card"><span class="cmd-name">/restore</span><span class="cmd-desc">Restaurer une backup</span></div>
+    <div class="cmd-card"><span class="cmd-name">/ticket</span><span class="cmd-desc">Créer un ticket</span></div>
+    <div class="cmd-card"><span class="cmd-name">/close</span><span class="cmd-desc">Fermer un ticket</span></div>
+    <div class="cmd-card"><span class="cmd-name">/rank</span><span class="cmd-desc">Voir ton niveau</span></div>
+    <div class="cmd-card"><span class="cmd-name">/leaderboard</span><span class="cmd-desc">Classement XP</span></div>
+    <div class="cmd-card"><span class="cmd-name">/play</span><span class="cmd-desc">Jouer de la musique</span></div>
+    <div class="cmd-card"><span class="cmd-name">/embed</span><span class="cmd-desc">Créer un embed</span></div>
+    <div class="cmd-card"><span class="cmd-name">/poll</span><span class="cmd-desc">Créer un sondage</span></div>
+    <div class="cmd-card"><span class="cmd-name">/userinfo</span><span class="cmd-desc">Infos membre</span></div>
+    <div class="cmd-card"><span class="cmd-name">/serverinfo</span><span class="cmd-desc">Infos serveur</span></div>
+    <div class="cmd-card"><span class="cmd-name">/roleinfo</span><span class="cmd-desc">Infos d'un rôle</span></div>
+    <div class="cmd-card"><span class="cmd-name">/nick</span><span class="cmd-desc">Changer pseudo</span></div>
+    <div class="cmd-card"><span class="cmd-name">/slowmode</span><span class="cmd-desc">Activer slowmode</span></div>
+    <div class="cmd-card"><span class="cmd-name">/lock</span><span class="cmd-desc">Verrouiller salon</span></div>
+    <div class="cmd-card"><span class="cmd-name">/unlock</span><span class="cmd-desc">Déverrouiller salon</span></div>
+    <div class="cmd-card"><span class="cmd-name">/remind</span><span class="cmd-desc">Rappel timer</span></div>
+    <div class="cmd-card"><span class="cmd-name">/coinflip</span><span class="cmd-desc">Pile ou face</span></div>
+    <div class="cmd-card"><span class="cmd-name">/roll</span><span class="cmd-desc">Lancer un dé</span></div>
+  </div>
+</section>
+
+<!-- PANEL LINK -->
+<section id="panel" style="text-align:center; padding: 60px 20px;">
+  <h2 class="section-title">Panel de Contrôle</h2>
+  <p style="font-family:'Patrick Hand',cursive; font-size:1.3rem; margin-bottom:20px;">Gère ton bot directement depuis le dashboard</p>
+  <a href="panel.html" class="invite-btn" style="display:inline-block;">Ouvrir le Panel</a>
+</section>
+
+<!-- INVITER -->
+<section id="invite">
+  <h2 class="section-title">Rejoins l'aventure</h2>
+  <div class="invite-box">
+    <p>C'est simple comme bonjour :</p>
+    <ol class="steps-list">
+      <li>Clique sur le bouton</li>
+      <li>Choisis ton serveur</li>
+      <li>Et c'est bon, Kycks est là ! 🎉</li>
+    </ol>
+    <a href="https://discord.com/oauth2/authorize?client_id=1544851212187340881&scope=bot%20applications.commands&permissions=8" class="invite-btn big-invite" target="_blank">+ Inviter Kycks maintenant</a>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <h2 class="section-title">Besoin d'aide ?</h2>
+  <div class="support-links">
+    <a href="#" class="support-btn"><span class="support-icon">💬</span><span>Discord Support</span></a>
+    <a href="#" class="support-btn"><span class="support-icon">🐦</span><span>Twitter</span></a>
+    <a href="#" class="support-btn"><span class="support-icon">📖</span><span>Documentation</span></a>
+  </div>
+</section>
+
+<footer>
+  <p>Fait avec ♥ et beaucoup de papier</p>
+  <p class="copyright">© 2026 Kycks Bot • Tous droits réservés</p>
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// Live stats via Socket.IO
+const socket = io();
+
+socket.on('botStatus', (data) => {
+  if (data.online) {
+    document.getElementById('statServers').textContent = (data.servers || 1) + '+';
+    document.getElementById('statUsers').textContent = data.users >= 1000 ? Math.floor(data.users/1000) + 'k+' : (data.users || 1) + '+';
+  }
+});
+
+// Fallback: try API directly
+async function loadRealStats() {
+  try {
+    const res = await fetch('/api/stats');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.servers) document.getElementById('statServers').textContent = data.servers + '+';
+      if (data.users) document.getElementById('statUsers').textContent = (data.users >= 1000 ? Math.floor(data.users/1000) + 'k+' : data.users + '+');
+    }
+  } catch (e) {
+    document.getElementById('statServers').textContent = '1+';
+    document.getElementById('statUsers').textContent = '1+';
+  }
+}
+
+loadRealStats();
+</script>
+
+</body>
+</html>

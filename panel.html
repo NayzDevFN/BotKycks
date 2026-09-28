@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kycks - Panel de Contrôle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="paper-texture"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks" class="nav-logo-img" onerror="this.src='assets/avatar.svg'">
+    <div class="nav-logo">KycksBot</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">🏠 Accueil</a>
+    <a href="index.html#features" class="nav-link">Fonctionnalités</a>
+    <a href="index.html#commands" class="nav-link">Commandes</a>
+    <a href="panel.html" class="nav-link active">Panel</a>
+    <a href="index.html#support" class="nav-link">Support</a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1544851212187340881&scope=bot%20applications.commands&permissions=8" class="nav-link nav-invite" target="_blank">+ Inviter</a>
+  </div>
+  <div class="nav-right">
+    <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks Bot" class="nav-avatar" onerror="this.src='assets/avatar.svg'">
+  </div>
+</nav>
+
+<!-- PANEL -->
+<section id="panel" style="padding-top: 80px;">
+  <h2 class="section-title" id="panelTitle">Panel de Contrôle</h2>
+  
+  <!-- SERVER SELECTOR OVERLAY -->
+  <div class="guild-selector-overlay" id="guildSelector">
+    <div class="guild-selector-box">
+      <h3>🌐 Sélectionner un Serveur</h3>
+      <p>Choisis le serveur que tu veux gérer :</p>
+      <div class="guild-list" id="guildList">
+        <div class="guild-loading">Chargement des serveurs...</div>
+      </div>
+      <div id="guildError" style="display:none;margin-top:20px;">
+        <p id="guildErrorText" style="color:#e74c3c;font-family:'Patrick Hand',cursive;margin-bottom:12px;"></p>
+        <input type="text" id="apiUrlInput" class="dash-input" placeholder="http://localhost:3000" style="margin-bottom:8px;width:80%;text-align:center;">
+        <br>
+        <button class="dash-btn" onclick="manualConnect()">🔗 Connecter</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard" id="dashboard" style="display:none;">
+    <!-- SIDEBAR -->
+    <div class="dash-sidebar">
+      <div class="dash-server">
+        <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks" class="dash-server-icon" onerror="this.src='assets/avatar.svg'">
+        <span id="serverName">Kycks Bot</span>
+      </div>
+      <div class="dash-menu">
+        <a class="dash-item active" onclick="showTab('accueil')"><span class="dash-icon">🏠</span> Accueil</a>
+        <a class="dash-item" onclick="showTab('general')"><span class="dash-icon">⚙️</span> Général</a>
+        <a class="dash-item" onclick="showTab('welcome')"><span class="dash-icon">👋</span> Bienvenue</a>
+        <a class="dash-item" onclick="showTab('automod')"><span class="dash-icon">🤖</span> Automod</a>
+        <a class="dash-item" onclick="showTab('moderation')"><span class="dash-icon">🛡️</span> Modération</a>
+        <a class="dash-item" onclick="showTab('tickets')"><span class="dash-icon">🎫</span> Tickets</a>
+        <a class="dash-item" onclick="showTab('levels')"><span class="dash-icon">📈</span> Niveaux</a>
+        <a class="dash-item" onclick="showTab('music')"><span class="dash-icon">🎵</span> Musique</a>
+        <a class="dash-item" onclick="showTab('autorole')"><span class="dash-icon">🎭</span> Autorole</a>
+        <a class="dash-item" onclick="showTab('logs')"><span class="dash-icon">📋</span> Logs</a>
+        <a class="dash-item" onclick="showTab('custom')"><span class="dash-icon">✨</span> Commandes Custom</a>
+        <a class="dash-item" onclick="showTab('starboard')"><span class="dash-icon">⭐</span> Starboard</a>
+        <a class="dash-item" onclick="showTab('reactionrole')"><span class="dash-icon">🎭</span> Reaction Role</a>
+        <a class="dash-item" onclick="showTab('voicerecord')"><span class="dash-icon">🎙️</span> Enregistrement Vocal</a>
+        <a class="dash-item" onclick="showTab('backup')"><span class="dash-icon">💾</span> Backup & Nuke</a>
+      </div>
+      <a href="https://discord.com/oauth2/authorize?client_id=1544851212187340881&scope=bot%20applications.commands&permissions=8" class="dash-invite-btn" target="_blank">+ Inviter le Bot</a>
+      <button class="dash-invite-btn" style="background:var(--accent);margin-top:8px;" onclick="changeGuild()">🔄 Changer de serveur</button>
+      <button class="dash-invite-btn" style="background:#e74c3c;margin-top:8px;" onclick="changeApiUrl()">🔗 Changer l'URL de l'API</button>
+    </div>
+    
+    <!-- CONTENT -->
+    <div class="dash-content">
+      
+      <!-- ACCUEIL -->
+      <div class="dash-tab active" id="tab-accueil">
+        <h3>🏠 Accueil</h3>
+        <div class="welcome-card">
+          <img src="assets/avatar/KycksBot-pdp.png" alt="Kycks" class="welcome-avatar" onerror="this.src='assets/avatar.svg'">
+          <h4>Bienvenue sur Kycks Bot !</h4>
+          <p id="serverGreeting">Gère ton serveur directement depuis ici.</p>
+          <div class="welcome-stats">
+            <div class="ws-item"><span class="ws-num" id="dashServers">-</span><span>Serveurs</span></div>
+            <div class="ws-item"><span class="ws-num" id="dashUsers">-</span><span>Utilisateurs</span></div>
+            <div class="ws-item"><span class="ws-num" id="dashChannels">-</span><span>Salons</span></div>
+            <div class="ws-item"><span class="ws-num" id="dashRoles">-</span><span>Rôles</span></div>
+            <div class="ws-item"><span class="ws-num">70+</span><span>Commandes</span></div>
+          </div>
+        </div>
+        <div class="quick-actions">
+          <h4>⚡ Actions Rapides</h4>
+          <div class="qa-grid">
+            <button onclick="showTab('general')" class="qa-btn">⚙️ Paramètres</button>
+            <button onclick="showTab('automod')" class="qa-btn">🤖 Automod</button>
+            <button onclick="showTab('tickets')" class="qa-btn">🎫 Tickets</button>
+            <button onclick="showTab('backup')" class="qa-btn">💾 Backup</button>
+            <button onclick="showTab('logs')" class="qa-btn">📋 Logs</button>
+            <button onclick="showTab('moderation')" class="qa-btn">🛡️ Modération</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- GÉNÉRAL -->
+      <div class="dash-tab" id="tab-general">
+        <h3>⚙️ Paramètres Généraux</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">💬</span><div><span class="setting-name">Préfixe</span><span class="setting-desc">Préfixe pour les commandes texte</span></div></div>
+          <div class="setting-input"><select id="cfg_prefix" class="dash-input"><option value="!">! (Exclamation)</option><option value=".">. (Point)</option><option value="?">? (Point d'interrogation)</option><option value="/">/ (Slash)</option><option value="#"># (Hashtag)</option><option value="-">- (Tiret)</option><option value="~">~ (Tilde)</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🟢</span><div><span class="setting-name">Status du Bot</span><span class="setting-desc">Activité affichée</span></div></div>
+          <div class="setting-input"><select id="cfg_status" class="dash-input"><option value="En ligne 🟢">En ligne 🟢</option><option value="Ne pas déranger 🔴">Ne pas déranger 🔴</option><option value="En jeu 🎮">En jeu 🎮</option><option value="En écoute 🎵">En écoute 🎵</option><option value="En direct 📺">En direct 📺</option><option value="Hors ligne ⚫">Hors ligne ⚫</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🌍</span><div><span class="setting-name">Langue</span><span class="setting-desc">Langue du bot</span></div></div>
+          <div class="setting-input">
+            <select id="cfg_language" class="dash-input"><option value="fr">Français</option><option value="en">English</option><option value="es">Español</option><option value="de">Deutsch</option></select>
+            <button onclick="saveConfig()" class="dash-btn">Sauvegarder</button>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎨</span><div><span class="setting-name">Couleur des Embeds</span><span class="setting-desc">Couleur hex des embeds</span></div></div>
+          <div class="setting-input"><input type="color" id="cfg_embedColor" class="dash-input small" value="#7289da"><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🖼️</span><div><span class="setting-name">Avatar du Bot</span><span class="setting-desc">Photo de profil du bot</span></div></div>
+          <div class="setting-input">
+            <input type="file" id="avatarUpload" accept="image/*" class="dash-input">
+            <button onclick="uploadAvatar()" class="dash-btn">📤 Upload</button>
+          </div>
+          <div style="margin-top:10px;">
+            <img id="currentAvatar" src="assets/avatar/KycksBot-pdp.png" alt="Avatar actuel" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--accent);" onerror="this.src='assets/avatar.svg'">
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔒</span><div><span class="setting-name">Admin Only</span><span class="setting-desc">Restreindre les commandes admin</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_adminOnly"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+      </div>
+      
+      <!-- BIENVENUE -->
+      <div class="dash-tab" id="tab-welcome">
+        <h3>👋 Messages de Bienvenue</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">👋</span><div><span class="setting-name">Message de bienvenue</span><span class="setting-desc">Envoyé quand un membre rejoint</span></div></div>
+          <div class="setting-input"><select id="cfg_welcomeMessage" class="dash-input"><option value="Bienvenue {user} sur {server} !">Bienvenue {user} sur {server} !</option><option value="Bienvenue {user} ! Profite bien de {server} 🎉">Bienvenue {user} ! Profite bien de {server} 🎉</option><option value="Hey {user} ! Content de te voir sur {server} 👋">Hey {user} ! Content de te voir sur {server} 👋</option><option value="{user} a rejoint {server} ! On est maintenant {count} 🥳">{user} a rejoint {server} ! On est maintenant {count} 🥳</option><option value="Welcome {user} to {server} ! 🎉">Welcome {user} to {server} ! 🎉</option><option value="Hey {user}, bienvenue sur {server} ! Amuse-toi bien 😄">Hey {user}, bienvenue sur {server} ! Amuse-toi bien 😄</option><option value="{user} vient de rejoindre {server} ! Bienvenue à lui/elle !">"{user} vient de rejoindre {server} ! Bienvenue à lui/elle !</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+          <span class="setting-hint">{user} = membre, {server} = serveur, {count} = nombre de membres</span>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📢</span><div><span class="setting-name">Salon de bienvenue</span><span class="setting-desc">Salon d'accueil</span></div></div>
+          <div class="setting-input"><select id="cfg_welcomeChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🖼️</span><div><span class="setting-name">Image de bienvenue</span><span class="setting-desc">URL de l'image d'accueil</span></div></div>
+          <div class="setting-input"><select id="cfg_welcomeImage" class="dash-input"><option value="">Aucune image</option><option value="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif">GIF Confetti</option><option value="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">GIF Célébration</option><option value="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif">GIF Bienvenue</option><option value="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">GIF Wave</option><option value="https://i.imgur.com/yourimage.png">Image Perso 1</option><option value="https://i.imgur.com/yourimage2.png">Image Perso 2</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">👋</span><div><span class="setting-name">DM de bienvenue</span><span class="setting-desc">Envoyer un MP aux nouveaux membres</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_welcomeDM"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">✉️</span><div><span class="setting-name">Message DM</span><span class="setting-desc">Message envoyé en MP</span></div></div>
+          <div class="setting-input"><select id="cfg_welcomeDMMessage" class="dash-input"><option value="Bienvenue sur {server} !">Bienvenue sur {server} !</option><option value="Hey {user} ! Bienvenue sur {server}, amuse-toi bien 👋">Hey {user} ! Bienvenue sur {server}, amuse-toi bien 👋</option><option value="Content de te voir sur {server} ! N'hésite pas à lire les règles 📜">Content de te voir sur {server} ! N'hésite pas à lire les règles 📜</option><option value="Welcome to {server} ! Enjoy your stay 🎉">Welcome to {server} ! Enjoy your stay 🎉</option><option value="Salut {user} ! Bienvenue dans la communauté {server} 😄">Salut {user} ! Bienvenue dans la communauté {server} 😄</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">😢</span><div><span class="setting-name">Message d'au revoir</span><span class="setting-desc">Envoyé quand un membre quitte</span></div></div>
+          <div class="setting-input"><select id="cfg_goodbyeMessage" class="dash-input"><option value="{user} a quitté le serveur.">{user} a quitté le serveur.</option><option value="Au revoir {user} ! On te souhaite le meilleur 👋">Au revoir {user} ! On te souhaite le meilleur 👋</option><option value="{user} nous a quitté... 😢">{user} nous a quitté... 😢</option><option value="Adieu {user}, reviens vite ! 💔">Adieu {user}, reviens vite ! 💔</option><option value="{user} a quitté {server}. On est maintenant {count}.">{user} a quitté {server}. On est maintenant {count}.</option><option value="Bye {user} ! 😢">Bye {user} ! 😢</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📢</span><div><span class="setting-name">Salon d'au revoir</span><span class="setting-desc">Salon pour les départs</span></div></div>
+          <div class="setting-input"><select id="cfg_goodbyeChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+      </div>
+      
+      <!-- AUTOMOD -->
+      <div class="dash-tab" id="tab-automod">
+        <h3>🤖 Automodération</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🤖</span><div><span class="setting-name">Automod Activé</span><span class="setting-desc">Active l'automodération</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_automodEnabled" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🚫</span><div><span class="setting-name">Anti-Spam</span><span class="setting-desc">Détecter et punir le spam</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_antiSpam" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔢</span><div><span class="setting-name">Limite Anti-Spam</span><span class="setting-desc">Messages max en X secondes</span></div></div>
+          <div class="setting-input">
+            <select id="cfg_automodSpamLimit" class="dash-input small"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="7">7</option><option value="10">10</option><option value="15">15</option></select>
+            <span>messages en</span>
+            <select id="cfg_automodSpamTime" class="dash-input small"><option value="3">3 sec</option><option value="5">5 sec</option><option value="7">7 sec</option><option value="10">10 sec</option><option value="15">15 sec</option><option value="30">30 sec</option></select>
+            <span></span>
+            <button onclick="saveConfig()" class="dash-btn">Sauvegarder</button>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔗</span><div><span class="setting-name">Anti-Liens</span><span class="setting-desc">Bloquer les liens Discord/externes</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_antiLink"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">✅</span><div><span class="setting-name">Whitelist Liens</span><span class="setting-desc">Domaines autorisés (séparés par ,)</span></div></div>
+          <div class="setting-input"><input type="text" id="cfg_automodLinkWhitelist" class="dash-input" placeholder="youtube.com, twitter.com"><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🤐</span><div><span class="setting-name">Filtre Mots Interdits</span><span class="setting-desc">Active le filtre de mots interdits</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_automodWordFilter" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🤐</span><div><span class="setting-name">Mots Interdits</span><span class="setting-desc">Mots supprimés automatiquement (séparés par ,)</span></div></div>
+          <div class="setting-input"><input type="text" id="cfg_badWords" class="dash-input" placeholder="mot1, mot2, mot3"><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📏</span><div><span class="setting-name">Limite Caractères</span><span class="setting-desc">Longueur max d'un message</span></div></div>
+          <div class="setting-input"><select id="cfg_maxMessageLength" class="dash-input small"><option value="500">500</option><option value="1000">1000</option><option value="1500">1500</option><option value="2000" selected>2000</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔒</span><div><span class="setting-name">Anti-Raid</span><span class="setting-desc">Protection contre les raids</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_antiRaid" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔤</span><div><span class="setting-name">Filtre Majuscules</span><span class="setting-desc">Bloquer les messages 100% majuscules</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_automodCapsFilter"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📊</span><div><span class="setting-name">Limite Majuscules</span><span class="setting-desc">% max de majuscules autorisées</span></div></div>
+          <div class="setting-input"><select id="cfg_automodCapsLimit" class="dash-input small"><option value="50">50%</option><option value="60">60%</option><option value="70" selected>70%</option><option value="80">80%</option><option value="90">90%</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⚡</span><div><span class="setting-name">Limite Warns</span><span class="setting-desc">Nombre de warns avant action</span></div></div>
+          <div class="setting-input"><select id="cfg_warnLimit" class="dash-input small"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="7">7</option><option value="10">10</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔨</span><div><span class="setting-name">Action Warn</span><span class="setting-desc">Action après X warns</span></div></div>
+          <div class="setting-input">
+            <select id="cfg_warnAction" class="dash-input"><option value="kick">Expulser</option><option value="ban">Bannir</option><option value="mute">Mute</option></select>
+            <button onclick="saveConfig()" class="dash-btn">Sauvegarder</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MODÉRATION -->
+      <div class="dash-tab" id="tab-moderation">
+        <h3>🛡️ Modération</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⚡</span><div><span class="setting-name">Mod Role</span><span class="setting-desc">Rôle avec permissions modération</span></div></div>
+          <div class="setting-input"><select id="cfg_modRole" class="dash-input"><option value="">Aucun rôle</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔨</span><div><span class="setting-name">Bannir</span><span class="setting-desc">Bannir un membre du serveur</span></div></div>
+          <div class="setting-input multi">
+            <select id="mBanUser" class="dash-input"><option value="">Choisir un membre</option></select>
+            <select id="mBanReason" class="dash-input"><option value="Spam">Spam</option><option value="Racisme">Racisme</option><option value="Harcelement">Harcelement</option><option value="Contenu NSFW">Contenu NSFW</option><option value="Pub non autorisée">Pub non autorisée</option><option value="Comportement toxique">Comportement toxique</option><option value="Multicompte">Multicompte</option><option value="Non-respect des règles">Non-respect des règles</option><option value="Raid/Attacks">Raid/Attacks</option></select>
+            <button onclick="modAction('ban')" class="dash-btn red">Bannir</button>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">👢</span><div><span class="setting-name">Expulser</span><span class="setting-desc">Expulser un membre</span></div></div>
+          <div class="setting-input multi">
+            <select id="mKickUser" class="dash-input"><option value="">Choisir un membre</option></select>
+            <select id="mKickReason" class="dash-input"><option value="Avertissement">Avertissement</option><option value="Spam">Spam</option><option value="Comportement toxique">Comportement toxique</option><option value="Non-respect des règles">Non-respect des règles</option><option value="Mauvaise utilisation">Mauvaise utilisation</option><option value="Hors-sujet">Hors-sujet</option><option value="Raid/Attacks">Raid/Attacks</option></select>
+            <button onclick="modAction('kick')" class="dash-btn orange">Expulser</button>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔇</span><div><span class="setting-name">Mute</span><span class="setting-desc">Mute temporaire</span></div></div>
+          <div class="setting-input multi">
+            <select id="mMuteUser" class="dash-input"><option value="">Choisir un membre</option></select>
+            <select id="mMuteDur" class="dash-input small"><option value="1">1 min</option><option value="5">5 min</option><option value="10">10 min</option><option value="15">15 min</option><option value="30">30 min</option><option value="60">1 heure</option><option value="120">2 heures</option><option value="1440">24 heures</option></select>
+            <button onclick="modAction('mute')" class="dash-btn blue">Mute</button>
+          </div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🗑️</span><div><span class="setting-name">Clear</span><span class="setting-desc">Supprimer des messages</span></div></div>
+          <div class="setting-input multi"><select id="mClearN" class="dash-input small"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="75">75</option><option value="100">100</option></select><button onclick="modAction('clear')" class="dash-btn purple">Supprimer</button></div>
+        </div>
+        <div class="setting-card" style="border-color: #e74c3c;">
+          <div class="setting-header"><span class="setting-icon">🧹</span><div><span class="setting-name">Supprimer tous les messages d'un utilisateur</span><span class="setting-desc">Supprime tous les messages d'un membre dans tous les salons (par ID)</span></div></div>
+          <div class="setting-input multi">
+            <input type="text" id="mDeleteUserId" class="dash-input" placeholder="ID de l'utilisateur">
+            <button onclick="deleteUserMessages()" class="dash-btn red">🧹 Tout supprimer</button>
+          </div>
+          <span class="setting-hint" style="color:#e74c3c;">⚠️ Cette action est irréversible. Seuls les messages de moins de 14 jours peuvent être supprimés en bulk.</span>
+        </div>
+      </div>
+      
+      <!-- TICKETS -->
+      <div class="dash-tab" id="tab-tickets">
+        <h3>🎫 Système de Tickets (Ticketool)</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎫</span><div><span class="setting-name">Tickets Activés</span><span class="setting-desc">Active le système de tickets</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_ticketEnabled" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📂</span><div><span class="setting-name">Catégorie Tickets</span><span class="setting-desc">Catégorie pour les tickets</span></div></div>
+          <div class="setting-input"><select id="cfg_ticketCategory" class="dash-input"><option value="">Aucune catégorie</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">💬</span><div><span class="setting-name">Salon Support</span><span class="setting-desc">Salon de notification</span></div></div>
+          <div class="setting-input"><select id="cfg_ticketLogChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📝</span><div><span class="setting-name">Message d'ouverture</span><span class="setting-desc">Message quand un ticket est ouvert</span></div></div>
+          <div class="setting-input"><select id="cfg_ticketMessage" class="dash-input"><option value="Un staff va vous répondre.">Un staff va vous répondre.</option><option value="Décris ton problème, un membre du staff t'aidera.">Décris ton problème, un membre du staff t'aidera.</option><option value="Bienvenue dans le support ! Explique-nous ton souci.">Bienvenue dans le support ! Explique-nous ton souci.</option><option value="Merci d'ouvrir un ticket. Un staff sera bientôt disponible.">Merci d'ouvrir un ticket. Un staff sera bientôt disponible.</option><option value="Support - Explique ton problème en détail.">Support - Explique ton problème en détail.</option><option value="Hello ! How can we help you today ?">Hello ! How can we help you today ?</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎫</span><div><span class="setting-name">Max Tickets par utilisateur</span></div></div>
+          <div class="setting-input"><select id="cfg_ticketMaxPerUser" class="dash-input small"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="7">7</option><option value="10">10</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📋</span><div><span class="setting-name">Transcript</span><span class="setting-desc">Sauvegarder les conversations</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_ticketTranscript" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+      </div>
+      
+      <!-- NIVEAUX -->
+      <div class="dash-tab" id="tab-levels">
+        <h3>📈 Système de Niveaux (Draftbot)</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📈</span><div><span class="setting-name">XP Activé</span><span class="setting-desc">Les membres gagnent de l'XP en parlant</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_levelEnabled" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎯</span><div><span class="setting-name">XP par message</span></div></div>
+          <div class="setting-input"><select id="cfg_xpPerMessage" class="dash-input small"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="50">50</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⏱️</span><div><span class="setting-name">Cooldown XP (secondes)</span></div></div>
+          <div class="setting-input"><select id="cfg_xpCooldown" class="dash-input small"><option value="15">15 sec</option><option value="30">30 sec</option><option value="60">60 sec</option><option value="120">120 sec</option><option value="300">300 sec</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📢</span><div><span class="setting-name">Salon de level up</span></div></div>
+          <div class="setting-input"><select id="cfg_levelUpChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎉</span><div><span class="setting-name">Message de level up</span></div></div>
+          <div class="setting-input"><select id="cfg_levelUpMessage" class="dash-input"><option value="{user} a atteint le niveau {level} !">{user} a atteint le niveau {level} !</option><option value="GG {user} ! Tu passes niveau {level} 🎉">GG {user} ! Tu passes niveau {level} 🎉</option><option value="Bravo {user} ! Niveau {level} atteint ! 🏆">Bravo {user} ! Niveau {level} atteint ! 🏆</option><option value="{user} vient de monter au niveau {level} ! 🔥">{user} vient de monter au niveau {level} ! 🔥</option><option value="Level Up ! {user} est maintenant niveau {level} ⬆️">Level Up ! {user} est maintenant niveau {level} ⬆️</option><option value="{user} → Niveau {level} ! Continue comme ça 💪">{user} → Niveau {level} ! Continue comme ça 💪</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+          <span class="setting-hint">{user} = membre, {level} = niveau</span>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🚫</span><div><span class="setting-name">Salons ignorés pour l'XP</span></div></div>
+          <div class="setting-input"><select id="cfg_ignoredChannels" class="dash-input" multiple><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+          <span class="setting-hint">Maintiens Ctrl pour sélectionner plusieurs salons</span>
+        </div>
+      </div>
+      
+      <!-- MUSIQUE -->
+      <div class="dash-tab" id="tab-music">
+        <h3>🎵 Musique</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎵</span><div><span class="setting-name">Musique Activée</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_musicEnabled" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔊</span><div><span class="setting-name">Volume par défaut</span></div></div>
+          <div class="setting-input"><select id="cfg_musicVolume" class="dash-input small"><option value="10">10%</option><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="80">80%</option><option value="100">100%</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⏭️</span><div><span class="setting-name">Auto-Play</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_musicAutoPlay"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔁</span><div><span class="setting-name">Loop</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_musicLoop"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔗</span><div><span class="setting-name">Sources supportées</span></div></div>
+          <div class="setting-tags"><span class="tag">YouTube</span><span class="tag">Spotify</span><span class="tag">SoundCloud</span><span class="tag">Twitch</span><span class="tag">Deezer</span><span class="tag">Apple Music</span></div>
+        </div>
+      </div>
+      
+      <!-- AUTOROLE -->
+      <div class="dash-tab" id="tab-autorole">
+        <h3>🎭 Autorôle</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎭</span><div><span class="setting-name">Rôle automatique</span><span class="setting-desc">Rôle donné aux nouveaux membres</span></div></div>
+          <div class="setting-input"><select id="cfg_autoRole" class="dash-input"><option value="">Aucun rôle</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⏰</span><div><span class="setting-name">Délai (secondes)</span></div></div>
+          <div class="setting-input"><select id="cfg_autoRoleDelay" class="dash-input small"><option value="0">0 sec</option><option value="5">5 sec</option><option value="10">10 sec</option><option value="15">15 sec</option><option value="30">30 sec</option><option value="60">60 sec</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">✅</span><div><span class="setting-name">Vérification requise</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_autoroleVerify"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+      </div>
+      
+      <!-- LOGS -->
+      <div class="dash-tab" id="tab-logs">
+        <h3>📋 Système de Logs</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📋</span><div><span class="setting-name">Salon de logs</span></div></div>
+          <div class="setting-input"><select id="cfg_logChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📝</span><div><span class="setting-name">Logs de messages</span><span class="setting-desc">Messages modifiés/supprimés</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_logsMessages" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">👤</span><div><span class="setting-name">Logs de membres</span><span class="setting-desc">Joins/Leaves</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_logsMembers" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🛡️</span><div><span class="setting-name">Logs de modération</span><span class="setting-desc">Ban/Kick/Mute</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_logsModeration" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🔊</span><div><span class="setting-name">Logs vocaux</span><span class="setting-desc">Join/Leave salons vocaux</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_logsVoice"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⚙️</span><div><span class="setting-name">Logs de serveur</span><span class="setting-desc">Création/suppression de salons</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_logsServer" checked><span class="toggle-slider"></span></label><span class="toggle-label">Activé</span></div>
+        </div>
+      </div>
+      
+      <!-- COMMANDES CUSTOM -->
+      <div class="dash-tab" id="tab-custom">
+        <h3>✨ Commandes Custom</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">➕</span><div><span class="setting-name">Ajouter une commande</span></div></div>
+          <div class="setting-input multi">
+            <select id="customCmdName" class="dash-input small"><option value="hello">hello</option><option value="salut">salut</option><option value="bonjour">bonjour</option><option value="bye">bye</option><option value="aide">aide</option><option value="merci">merci</option><option value="coucou">coucou</option><option value="site">site</option></select>
+            <select id="customCmdResponse" class="dash-input"><option value="Salut ! 👋">Salut ! 👋</option><option value="Bonjour ! Comment ça va ?">Bonjour ! Comment ça va ?</option><option value="Au revoir ! 👋">Au revoir ! 👋</option><option value="Voici le site : https://example.com">Voici le site : https://example.com</option><option value="Merci à toi ! 😄">Merci à toi ! 😄</option><option value="Comment puis-je t'aider ?">Comment puis-je t'aider ?</option><option value="C'est génial ! 🎉">C'est génial ! 🎉</option></select>
+            <button onclick="addCustomCmd()" class="dash-btn">Ajouter</button>
+          </div>
+        </div>
+        <div class="custom-list" id="customCmdList">
+          <h4>📋 Commandes existantes</h4>
+          <div class="empty-state">Aucune commande custom.</div>
+        </div>
+      </div>
+      
+      <!-- STARBOARD -->
+      <div class="dash-tab" id="tab-starboard">
+        <h3>⭐ Starboard</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⭐</span><div><span class="setting-name">Salon Starboard</span></div></div>
+          <div class="setting-input"><select id="cfg_starboardChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">⭐</span><div><span class="setting-name">Seuil d'étoiles</span></div></div>
+          <div class="setting-input"><select id="cfg_starboardThreshold" class="dash-input small"><option value="3">3 ⭐</option><option value="5">5 ⭐</option><option value="7">7 ⭐</option><option value="10">10 ⭐</option><option value="15">15 ⭐</option><option value="20">20 ⭐</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+      </div>
+      
+      <!-- REACTION ROLE -->
+      <div class="dash-tab" id="tab-reactionrole">
+        <h3>🎭 Reaction Role</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">💬</span><div><span class="setting-name">Message Reaction Role</span></div></div>
+          <div class="setting-input"><select id="cfg_reactionRoleMessage" class="dash-input"><option value="">Aucun message</option><option value="roles">Sélection de rôles</option><option value="regles">Règles du serveur</option><option value="annonces">Annonces</option><option value="bienvenue">Message de bienvenue</option><option value="custom">Message custom</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎭</span><div><span class="setting-name">Reaction Roles</span><span class="setting-desc">Format: emoji:roleID</span></div></div>
+          <div class="setting-input"><select id="cfg_reactionRoles" class="dash-input"><option value="">Aucun reaction role</option><option value="🔴:roleID1, 🔵:roleID2, 🟢:roleID3">Couleurs (RGB)</option><option value="🎮:gamerID, 🎵:musicID, 🎬:movieID">Centres d'intérêt</option><option value="🔔:notifID, 📢:annonceID">Notifications</option><option value="👍:roleID1, 👎:roleID2">Oui/Non</option><option value="♂️:maleID, ♀️:femaleID">Genre</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+      </div>
+      
+      <!-- ENREGISTREMENT VOCAL -->
+      <div class="dash-tab" id="tab-voicerecord">
+        <h3>🎙️ Enregistrement Vocal Automatique</h3>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🎙️</span><div><span class="setting-name">Enregistrement Activé</span><span class="setting-desc">Rejoint automatiquement les salons vocaux et enregistre</span></div></div>
+          <div class="setting-toggle"><label class="toggle"><input type="checkbox" id="cfg_voiceRecordEnabled"><span class="toggle-slider"></span></label><span class="toggle-label">Désactivé</span></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">📢</span><div><span class="setting-name">Salon d'envoi des enregistrements</span><span class="setting-desc">Salon où les enregistrements sont envoyés (admin only)</span></div></div>
+          <div class="setting-input"><select id="cfg_voiceRecordChannel" class="dash-input"><option value="">Aucun salon</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card">
+          <div class="setting-header"><span class="setting-icon">🛡️</span><div><span class="setting-name">Rôle Admin Enregistrements</span><span class="setting-desc">Rôle qui peut voir les enregistrements (configurez les permissions du salon)</span></div></div>
+          <div class="setting-input"><select id="cfg_voiceRecordAdminRole" class="dash-input"><option value="">Aucun rôle</option></select><button onclick="saveConfig()" class="dash-btn">Sauvegarder</button></div>
+        </div>
+        <div class="setting-card" style="border-color: #f39c12;">
+          <div class="setting-header"><span class="setting-icon">ℹ️</span><div><span class="setting-name">Comment ça marche</span></div></div>
+          <div style="font-family:'Patrick Hand',cursive; color: var(--text); line-height: 1.8;">
+            <p>1. Active l'enregistrement ci-dessus</p>
+            <p>2. Configure le salon d'envoi des enregistrements</p>
+            <p>3. Le bot rejoint automatiquement quand quelqu'un rejoint un salon vocal</p>
+            <p>4. L'enregistrement s'arrête quand tout le monde quitte le salon</p>
+            <p>5. Le fichier audio est envoyé dans le salon configuré</p>
+            <p style="color: #e74c3c; margin-top: 10px;">⚠️ N'oublie pas de configurer les permissions du salon pour que seuls les admins puissent voir les enregistrements !</p>
+            <p style="color: #3498db;">💡 Commande /stoprecord pour arrêter manuellement un enregistrement</p>
+          </div>
+        </div>
+        <div class="setting-card" id="recordingStatusCard" style="border-color: #2ecc71; display:none;">
+          <div class="setting-header"><span class="setting-icon">🔴</span><div><span class="setting-name">Enregistrement en cours</span></div></div>
+          <div style="font-family:'Patrick Hand',cursive;">
+            <p id="recordingStatus">Aucun enregistrement actif</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- BACKUP & NUKE -->
+      <div class="dash-tab" id="tab-backup">
+        <h3>💾 Backup & Nuke</h3>
+        <div class="setting-card" style="border-color: #2ecc71;">
+          <div class="setting-header"><span class="setting-icon">💾</span><div><span class="setting-name">Sauvegarde</span><span class="setting-desc">Sauvegarder salons + rôles</span></div></div>
+          <div class="setting-input multi">
+            <select id="backupName" class="dash-input"><option value="">Nom par défaut</option><option value="Avant-modif">Avant-modif</option><option value="Avant-nuke">Avant-nuke</option><option value="Stable">Stable</option><option value="Test">Test</option><option value="Complet">Complet</option></select>
+            <button onclick="createBackup()" class="dash-btn green">💾 Créer</button>
+          </div>
+        </div>
+        <div class="setting-card" style="border-color: #3498db;">
+          <div class="setting-header"><span class="setting-icon">📋</span><div><span class="setting-name">Sauvegardes</span></div></div>
+          <div id="backupList" class="backup-list"><div class="empty-state">Chargement...</div></div>
+          <button onclick="loadBackups()" class="dash-btn" style="margin-top:10px;">🔄 Rafraîchir</button>
+        </div>
+        <div class="setting-card" style="border-color: #e74c3c;">
+          <div class="setting-header"><span class="setting-icon">💥</span><div><span class="setting-name">Nuke</span><span class="setting-desc">⚠️ SUPPRIME TOUS LES SALONS ⚠️</span></div></div>
+          <p style="font-family:'Patrick Hand',cursive; color:#e74c3c;">Une sauvegarde est créée automatiquement.</p>
+          <div class="setting-input multi">
+            <input id="nukeOwnerId" class="dash-input" placeholder="ID Discord du propriétaire (👑)" style="flex:1;" oninput="saveNukeOwnerId()">
+          </div>
+          <p style="font-family:'Patrick Hand',cursive; color:#f39c12;">🔒 Seul l'ID configuré peut nuker. L'ID est sauvegardé automatiquement.</p>
+          <button onclick="nukeServer()" class="dash-btn red" style="margin-top:10px;">💥 Nuke le serveur</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="notification" id="notif"><span id="notifText">Sauvegardé !</span></div>
+  <div class="save-bar" id="saveBar">
+    <span id="saveBarIcon">✅</span>
+    <span id="saveBarText">Enregistré</span>
+  </div>
+</section>
+
+<footer>
+  <p>Fait avec ♥ et beaucoup de papier</p>
+  <p class="copyright">© 2026 Kycks Bot • Tous droits réservés</p>
+</footer>
+
+<style>
+.guild-selector-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+.guild-selector-box {
+  background: var(--card-bg, #1e1e2e);
+  border: 2px solid var(--accent, #7289da);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+}
+.guild-selector-box h3 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.8em;
+  color: var(--accent, #7289da);
+  margin-bottom: 8px;
+}
+.guild-selector-box > p {
+  font-family: 'Patrick Hand', cursive;
+  color: var(--text, #ddd);
+  margin-bottom: 24px;
+  font-size: 1.1em;
+}
+.guild-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.guild-card {
+  background: var(--bg, #12121a);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.guild-card:hover {
+  border-color: var(--accent, #7289da);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(114,137,218,0.3);
+}
+.guild-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--accent, #7289da);
+}
+.guild-card .guild-name {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1em;
+  color: var(--text, #ddd);
+  font-weight: 600;
+}
+.guild-card .guild-count {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 0.9em;
+  color: var(--text-muted, #888);
+}
+.guild-loading {
+  grid-column: 1 / -1;
+  font-family: 'Patrick Hand', cursive;
+  color: var(--text-muted, #888);
+  font-size: 1.2em;
+  padding: 20px;
+}
+.guild-back-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 20px;
+  background: var(--accent, #7289da);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1em;
+  cursor: pointer;
+}
+.guild-back-btn:hover { opacity: 0.85; }
+
+.save-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card-bg, #1e1e2e);
+  border-top: 2px solid #2ecc71;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1em;
+  color: #2ecc71;
+  z-index: 1000;
+  transition: all 0.3s;
+}
+.save-bar.unsaved {
+  border-top-color: #e74c3c;
+  color: #e74c3c;
+}
+.save-bar.saving {
+  border-top-color: #f39c12;
+  color: #f39c12;
+}
+</style>
+
+<script>
+function loadScript(url) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = url;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+</script>
+<script>
+// ===================== API URL CONFIG =====================
+function getApiUrl() {
+  return localStorage.getItem('botApiUrl') || '';
+}
+
+function setApiUrl(url) {
+  localStorage.setItem('botApiUrl', url.replace(/\/$/, ''));
+}
+
+function isGitHubPages() {
+  return window.location.hostname.includes('github.io');
+}
+
+let API = isGitHubPages() ? (getApiUrl() || '') : window.location.origin;
+let socket = null;
+
+function connectSocket() {
+  if (!API) return;
+  if (typeof io === 'undefined') {
+    console.warn('Socket.IO non chargé, mode HTTP uniquement');
+    return;
+  }
+  
+  try {
+    socket = io(API, { transports: ['websocket', 'polling'] });
+    socket.on('connect', () => console.log('Socket connecté'));
+    socket.on('botStatus', (data) => {
+      const statusEl = document.getElementById('dashServers');
+      const usersEl = document.getElementById('dashUsers');
+      const nameEl = document.getElementById('serverName');
+      if (data.online) {
+        if (statusEl) statusEl.textContent = data.servers || 0;
+        if (usersEl) usersEl.textContent = data.users || 0;
+        if (nameEl && nameEl.textContent === 'Hors ligne') nameEl.textContent = 'Kycks Bot';
+      } else {
+        if (statusEl) statusEl.textContent = '0';
+        if (usersEl) usersEl.textContent = '0';
+        if (nameEl) nameEl.textContent = 'Hors ligne';
+      }
+    });
+    socket.on('modAction', (data) => notif(`${data.action.toUpperCase()}: ${data.user}`));
+    socket.on('backupCreated', (data) => { notif(`Backup créée: ${data.name}`); loadBackups(); });
+    socket.on('serverNuked', (data) => { notif(`Nuke fait ! Backup: ${data.backup}`); loadBackups(); });
+    socket.on('configUpdated', () => loadConfig());
+    socket.on('avatarUpdated', (data) => {
+      const imgs = document.querySelectorAll('.nav-logo-img, .nav-avatar, .welcome-avatar, .dash-server-icon, #currentAvatar');
+      imgs.forEach(el => el.src = data.path + '?' + Date.now());
+    });
+    socket.on('recordingUpdate', (data) => updateRecordingStatus(data));
+  } catch (e) {
+    console.warn('Socket pas disponible:', e.message);
+  }
+}
+
+const BOT_CLIENT_ID = '1544851212187340881';
+let currentConfig = {};
+let customCommands = [];
+let selectors = { textChannels: [], voiceChannels: [], categories: [], roles: [], members: [] };
+let selectedGuildId = localStorage.getItem('selectedGuildId') || null;
+
+// ===================== INIT =====================
+window.onload = async function() {
+  API = getApiUrl() || window.location.origin;
+
+  if (isGitHubPages() && !getApiUrl()) {
+    const url = prompt('🔗 Entrez l\'URL de l\'API du bot\n\nExemples :\n- https://xxxx.ngrok-free.app\n- http://localhost:3000');
+    if (url) {
+      setApiUrl(url);
+      API = url;
+    } else {
+      document.getElementById('guildList').innerHTML = '';
+      document.getElementById('guildError').style.display = 'block';
+      document.getElementById('guildErrorText').textContent = '❌ URL requise pour se connecter au bot.';
+      return;
+    }
+  }
+
+  await loadSocketIO();
+  connectSocket();
+  await loadGuilds();
+};
+
+async function loadSocketIO() {
+  if (typeof io !== 'undefined') return;
+  const urls = [
+    `${API}/socket.io/socket.io.js`,
+    'https://cdn.socket.io/4.7.5/socket.io.min.js'
+  ];
+  for (const url of urls) {
+    try {
+      await loadScript(url);
+      if (typeof io !== 'undefined') return;
+    } catch {}
+  }
+  console.warn('Socket.IO non disponible, mode HTTP uniquement');
+}
+
+function manualConnect() {
+  const url = document.getElementById('apiUrlInput').value.trim();
+  if (!url) return;
+  setApiUrl(url);
+  API = url;
+  document.getElementById('guildError').style.display = 'none';
+  document.getElementById('guildList').innerHTML = '<div class="guild-loading">Connexion...</div>';
+  loadSocketIO().then(() => {
+    connectSocket();
+    loadGuilds();
+  });
+}
+
+function changeApiUrl() {
+  const url = prompt('🔗 URL de l\'API du bot :');
+  if (url) {
+    setApiUrl(url);
+    location.reload();
+  }
+}
+
+async function loadGuilds(retryCount) {
+  retryCount = retryCount || 0;
+  const list = document.getElementById('guildList');
+  const errorDiv = document.getElementById('guildError');
+  const errorText = document.getElementById('guildErrorText');
+  if (errorDiv) errorDiv.style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/api/guilds`);
+    const data = await res.json();
+    if (data.ready === false || !data.guilds || data.guilds.length === 0) {
+      if (retryCount < 20) {
+        setTimeout(() => loadGuilds(retryCount + 1), 3000);
+        list.innerHTML = '<div class="guild-loading">⏳ Bot en cours de connexion... (' + (retryCount + 1) + ')</div>';
+      } else {
+        list.innerHTML = '';
+        if (errorDiv) {
+          errorDiv.style.display = 'block';
+          errorText.textContent = '❌ Bot non connecté ou pas de serveurs. Vérifie que le bot tourne et que l\'URL est correcte.';
+        }
+      }
+      return;
+    }
+    list.innerHTML = data.guilds.map(g => `
+      <div class="guild-card" onclick="selectGuild('${g.id}')">
+        <img src="${g.icon || 'assets/avatar/KycksBot-pdp.png'}" alt="${g.name}" onerror="this.src='assets/avatar/KycksBot-pdp.png'">
+        <div class="guild-name">${g.name}</div>
+        <div class="guild-count">👥 ${g.memberCount} membres</div>
+      </div>
+    `).join('');
+    
+    if (selectedGuildId && data.guilds.find(g => g.id === selectedGuildId)) {
+      selectGuild(selectedGuildId);
+    }
+  } catch (e) {
+    console.error('loadGuilds error:', e);
+    list.innerHTML = '';
+    if (errorDiv) {
+      errorDiv.style.display = 'block';
+      errorText.textContent = '❌ Impossible de joindre le bot (' + e.message + '). Vérifie que node api.js est lancé.';
+    }
+  }
+}
+
+async function selectGuild(guildId) {
+  selectedGuildId = guildId;
+  localStorage.setItem('selectedGuildId', guildId);
+  document.getElementById('guildSelector').style.display = 'none';
+  document.getElementById('dashboard').style.display = '';
+  document.getElementById('dashboard').className = 'dashboard';
+  await loadSelectors();
+  await loadConfig();
+  await loadBackups();
+  loadStats();
+  renderCustomCmds();
+  checkRecordingStatus();
+}
+
+function changeGuild() {
+  document.getElementById('guildSelector').style.display = '';
+  document.getElementById('dashboard').style.display = 'none';
+  selectedGuildId = null;
+  localStorage.removeItem('selectedGuildId');
+  loadGuilds();
+}
+
+// ===================== LOAD SELECTORS =====================
+async function loadSelectors() {
+  if (!selectedGuildId) return;
+  try {
+    const res = await fetch(`${API}/api/selectors?guildId=${selectedGuildId}`);
+    if (!res.ok) throw new Error('API non disponible');
+    selectors = await res.json();
+    populateSelectors();
+  } catch (e) {
+    console.warn('API non connectée:', e.message);
+  }
+}
+
+function populateSelectors() {
+  const channelOptions = selectors.textChannels.map(c => 
+    `<option value="${c.id}">${c.category ? c.category + ' › ' : ''}# ${c.name}</option>`
+  ).join('');
+  
+  const catOptions = selectors.categories.map(c => 
+    `<option value="${c.id}">📂 ${c.name}</option>`
+  ).join('');
+  
+  const roleOptions = selectors.roles.map(r => 
+    `<option value="${r.id}">🏷️ ${r.name}</option>`
+  ).join('');
+  
+  const memberOptions = selectors.members.map(m => 
+    `<option value="${m.id}">${m.username}</option>`
+  ).join('');
+  
+  const nullChannel = '<option value="">— Aucun salon —</option>';
+  const nullCat = '<option value="">— Aucune catégorie —</option>';
+  const nullRole = '<option value="">— Aucun rôle —</option>';
+  const nullMember = '<option value="">— Choisir un membre —</option>';
+  
+  setSelectOptions('cfg_welcomeChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_goodbyeChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_ticketCategory', nullCat + catOptions);
+  setSelectOptions('cfg_ticketLogChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_modRole', nullRole + roleOptions);
+  setSelectOptions('mBanUser', nullMember + memberOptions);
+  setSelectOptions('mKickUser', nullMember + memberOptions);
+  setSelectOptions('mMuteUser', nullMember + memberOptions);
+  setSelectOptions('cfg_levelUpChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_ignoredChannels', nullChannel + channelOptions);
+  setSelectOptions('cfg_autoRole', nullRole + roleOptions);
+  setSelectOptions('cfg_logChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_starboardChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_voiceRecordChannel', nullChannel + channelOptions);
+  setSelectOptions('cfg_voiceRecordAdminRole', nullRole + roleOptions);
+}
+
+function setSelectOptions(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
+}
+
+// ===================== LOAD CONFIG =====================
+async function loadConfig() {
+  if (!selectedGuildId) return;
+  try {
+    const res = await fetch(`${API}/api/config?guildId=${selectedGuildId}`);
+    if (!res.ok) throw new Error('API non disponible');
+    currentConfig = await res.json();
+    applyConfig();
+  } catch (e) {
+    console.warn('Config pas disponible:', e.message);
+    currentConfig = {};
+    applyConfig();
+  }
+}
+
+function applyConfig() {
+  setVal('cfg_prefix', currentConfig.prefix);
+  setVal('cfg_status', currentConfig.status);
+  setVal('cfg_language', currentConfig.language);
+  setVal('cfg_embedColor', currentConfig.embedColor);
+  setCheck('cfg_adminOnly', currentConfig.adminOnly);
+  
+  setVal('cfg_welcomeMessage', currentConfig.welcomeMessage);
+  setSelectVal('cfg_welcomeChannel', currentConfig.welcomeChannel);
+  setVal('cfg_welcomeImage', currentConfig.welcomeImage);
+  setCheck('cfg_welcomeDM', currentConfig.welcomeDM);
+  setVal('cfg_welcomeDMMessage', currentConfig.welcomeDMMessage);
+  setVal('cfg_goodbyeMessage', currentConfig.goodbyeMessage);
+  setSelectVal('cfg_goodbyeChannel', currentConfig.goodbyeChannel);
+  
+  setCheck('cfg_automodEnabled', currentConfig.automodEnabled);
+  setCheck('cfg_antiSpam', currentConfig.antiSpam);
+  setVal('cfg_automodSpamLimit', currentConfig.automodSpamLimit);
+  setVal('cfg_automodSpamTime', currentConfig.automodSpamTime);
+  setCheck('cfg_antiLink', currentConfig.antiLink);
+  setVal('cfg_automodLinkWhitelist', (currentConfig.automodLinkWhitelist || []).join(', '));
+  setCheck('cfg_automodWordFilter', currentConfig.automodWordFilter);
+  setVal('cfg_badWords', (currentConfig.badWords || []).join(', '));
+  setVal('cfg_maxMessageLength', currentConfig.maxMessageLength);
+  setCheck('cfg_antiRaid', currentConfig.antiRaid);
+  setCheck('cfg_automodCapsFilter', currentConfig.automodCapsFilter);
+  setVal('cfg_automodCapsLimit', currentConfig.automodCapsLimit);
+  setVal('cfg_warnLimit', currentConfig.warnLimit);
+  setVal('cfg_warnAction', currentConfig.warnAction);
+  
+  setSelectVal('cfg_modRole', currentConfig.modRole);
+  
+  setCheck('cfg_ticketEnabled', currentConfig.ticketEnabled);
+  setSelectVal('cfg_ticketCategory', currentConfig.ticketCategory);
+  setSelectVal('cfg_ticketLogChannel', currentConfig.ticketLogChannel);
+  setVal('cfg_ticketMessage', currentConfig.ticketMessage);
+  setVal('cfg_ticketMaxPerUser', currentConfig.ticketMaxPerUser);
+  setCheck('cfg_ticketTranscript', currentConfig.ticketTranscript);
+  
+  setCheck('cfg_levelEnabled', currentConfig.levelEnabled);
+  setVal('cfg_xpPerMessage', currentConfig.xpPerMessage);
+  setVal('cfg_xpCooldown', currentConfig.xpCooldown);
+  setSelectVal('cfg_levelUpChannel', currentConfig.levelUpChannel);
+  setVal('cfg_levelUpMessage', currentConfig.levelUpMessage);
+  
+  setCheck('cfg_musicEnabled', currentConfig.musicEnabled);
+  setVal('cfg_musicVolume', currentConfig.musicVolume);
+  setCheck('cfg_musicAutoPlay', currentConfig.musicAutoPlay);
+  setCheck('cfg_musicLoop', currentConfig.musicLoop);
+  
+  setSelectVal('cfg_autoRole', currentConfig.autoRole);
+  setVal('cfg_autoRoleDelay', currentConfig.autoRoleDelay);
+  setCheck('cfg_autoroleVerify', currentConfig.autoroleVerify);
+  
+  setSelectVal('cfg_logChannel', currentConfig.logChannel);
+  setCheck('cfg_logsMessages', currentConfig.logsMessages);
+  setCheck('cfg_logsMembers', currentConfig.logsMembers);
+  setCheck('cfg_logsModeration', currentConfig.logsModeration);
+  setCheck('cfg_logsVoice', currentConfig.logsVoice);
+  setCheck('cfg_logsServer', currentConfig.logsServer);
+  
+  setSelectVal('cfg_starboardChannel', currentConfig.starboardChannel);
+  setVal('cfg_starboardThreshold', currentConfig.starboardThreshold);
+  
+  setVal('cfg_reactionRoleMessage', currentConfig.reactionRoleMessage);
+  
+  setCheck('cfg_voiceRecordEnabled', currentConfig.voiceRecordEnabled);
+  setSelectVal('cfg_voiceRecordChannel', currentConfig.voiceRecordChannel);
+  setSelectVal('cfg_voiceRecordAdminRole', currentConfig.voiceRecordAdminRole);
+
+  setVal('nukeOwnerId', currentConfig.nukeOwnerId);
+
+  customCommands = currentConfig.customCommands || [];
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el && val !== undefined && val !== null) el.value = val;
+}
+function setSelectVal(id, val) {
+  const el = document.getElementById(id);
+  if (el && val) {
+    el.value = val;
+    // Si la valeur n'existe pas dans les options, on l'ajoute
+    if (el.value !== val && val) {
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = val + ' (non trouvé)';
+      el.appendChild(opt);
+      el.value = val;
+    }
+  }
+}
+function setCheck(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.checked = !!val;
+}
+
+// ===================== SAVE CONFIG =====================
+async function saveConfig() {
+  currentConfig.prefix = getVal('cfg_prefix');
+  currentConfig.status = getVal('cfg_status');
+  currentConfig.language = getVal('cfg_language');
+  currentConfig.embedColor = getVal('cfg_embedColor');
+  currentConfig.adminOnly = getCheck('cfg_adminOnly');
+  
+  currentConfig.welcomeMessage = getVal('cfg_welcomeMessage');
+  currentConfig.welcomeChannel = getVal('cfg_welcomeChannel') || null;
+  currentConfig.welcomeImage = getVal('cfg_welcomeImage') || null;
+  currentConfig.welcomeDM = getCheck('cfg_welcomeDM');
+  currentConfig.welcomeDMMessage = getVal('cfg_welcomeDMMessage');
+  currentConfig.goodbyeMessage = getVal('cfg_goodbyeMessage');
+  currentConfig.goodbyeChannel = getVal('cfg_goodbyeChannel') || null;
+  
+  currentConfig.automodEnabled = getCheck('cfg_automodEnabled');
+  currentConfig.antiSpam = getCheck('cfg_antiSpam');
+  currentConfig.automodSpamLimit = parseInt(getVal('cfg_automodSpamLimit')) || 5;
+  currentConfig.automodSpamTime = parseInt(getVal('cfg_automodSpamTime')) || 5;
+  currentConfig.antiLink = getCheck('cfg_antiLink');
+  currentConfig.automodLinkWhitelist = getVal('cfg_automodLinkWhitelist').split(',').map(s => s.trim()).filter(Boolean);
+  currentConfig.automodWordFilter = getCheck('cfg_automodWordFilter');
+  currentConfig.badWords = getVal('cfg_badWords').split(',').map(s => s.trim()).filter(Boolean);
+  currentConfig.maxMessageLength = parseInt(getVal('cfg_maxMessageLength')) || 2000;
+  currentConfig.antiRaid = getCheck('cfg_antiRaid');
+  currentConfig.automodCapsFilter = getCheck('cfg_automodCapsFilter');
+  currentConfig.automodCapsLimit = parseInt(getVal('cfg_automodCapsLimit')) || 70;
+  currentConfig.warnLimit = parseInt(getVal('cfg_warnLimit')) || 3;
+  currentConfig.warnAction = getVal('cfg_warnAction');
+  
+  currentConfig.modRole = getVal('cfg_modRole') || null;
+  
+  currentConfig.ticketEnabled = getCheck('cfg_ticketEnabled');
+  currentConfig.ticketCategory = getVal('cfg_ticketCategory') || null;
+  currentConfig.ticketLogChannel = getVal('cfg_ticketLogChannel') || null;
+  currentConfig.ticketMessage = getVal('cfg_ticketMessage');
+  currentConfig.ticketMaxPerUser = parseInt(getVal('cfg_ticketMaxPerUser')) || 3;
+  currentConfig.ticketTranscript = getCheck('cfg_ticketTranscript');
+  
+  currentConfig.levelEnabled = getCheck('cfg_levelEnabled');
+  currentConfig.xpPerMessage = parseInt(getVal('cfg_xpPerMessage')) || 15;
+  currentConfig.xpCooldown = parseInt(getVal('cfg_xpCooldown')) || 60;
+  currentConfig.levelUpChannel = getVal('cfg_levelUpChannel') || null;
+  currentConfig.levelUpMessage = getVal('cfg_levelUpMessage');
+  currentConfig.ignoredChannels = getSelectValues('cfg_ignoredChannels');
+  
+  currentConfig.musicEnabled = getCheck('cfg_musicEnabled');
+  currentConfig.musicVolume = parseInt(getVal('cfg_musicVolume')) || 80;
+  currentConfig.musicAutoPlay = getCheck('cfg_musicAutoPlay');
+  currentConfig.musicLoop = getCheck('cfg_musicLoop');
+  
+  currentConfig.autoRole = getVal('cfg_autoRole') || null;
+  currentConfig.autoRoleDelay = parseInt(getVal('cfg_autoRoleDelay')) || 0;
+  currentConfig.autoroleVerify = getCheck('cfg_autoroleVerify');
+  
+  currentConfig.logChannel = getVal('cfg_logChannel') || null;
+  currentConfig.logsMessages = getCheck('cfg_logsMessages');
+  currentConfig.logsMembers = getCheck('cfg_logsMembers');
+  currentConfig.logsModeration = getCheck('cfg_logsModeration');
+  currentConfig.logsVoice = getCheck('cfg_logsVoice');
+  currentConfig.logsServer = getCheck('cfg_logsServer');
+  
+  currentConfig.starboardChannel = getVal('cfg_starboardChannel') || null;
+  currentConfig.starboardThreshold = parseInt(getVal('cfg_starboardThreshold')) || 5;
+  
+  currentConfig.reactionRoleMessage = getVal('cfg_reactionRoleMessage') || null;
+  currentConfig.customCommands = customCommands;
+  
+  currentConfig.voiceRecordEnabled = getCheck('cfg_voiceRecordEnabled');
+  currentConfig.voiceRecordChannel = getVal('cfg_voiceRecordChannel') || null;
+  currentConfig.voiceRecordAdminRole = getVal('cfg_voiceRecordAdminRole') || null;
+  currentConfig.nukeOwnerId = getVal('nukeOwnerId') || null;
+  currentConfig.guildId = selectedGuildId;
+  
+  try {
+    const res = await fetch(`${API}/api/config`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentConfig)
+    });
+    const data = await res.json();
+    if (data.success) {
+      notif('Configuration sauvegardée !');
+    } else {
+      notif('Erreur: ' + data.message, 'error');
+    }
+  } catch (e) {
+    localStorage.setItem('kycksConfig', JSON.stringify(currentConfig));
+    notif('Sauvegardé localement (bot déconnecté)', 'error');
+  }
+}
+
+function getVal(id) { return document.getElementById(id)?.value || ''; }
+function getCheck(id) { return document.getElementById(id)?.checked || false; }
+function getSelectValues(id) {
+  const el = document.getElementById(id);
+  if (!el) return [];
+  return Array.from(el.selectedOptions).map(o => o.value).filter(Boolean);
+}
+
+// ===================== MOD ACTIONS =====================
+async function modAction(action) {
+  if (!selectedGuildId) return notif('Choisis un serveur d\'abord', 'error');
+  const userFields = { ban: 'mBanUser', kick: 'mKickUser', mute: 'mMuteUser' };
+  const reasonFields = { ban: 'mBanReason', kick: 'mKickReason', mute: 'mMuteDur' };
+  
+  const userId = getVal(userFields[action]);
+  const reason = getVal(reasonFields[action]);
+  
+  if (!userId) return notif('Choisis un membre', 'error');
+  
+  try {
+    let body = { userId, guildId: selectedGuildId };
+    if (action === 'ban' || action === 'kick') body.reason = reason || 'Modération depuis le panel';
+    if (action === 'mute') body.duration = parseInt(reason) || 10;
+    if (action === 'clear') { body.amount = parseInt(getVal('mClearN')); if (!body.amount) return notif('Nombre requis', 'error'); }
+    
+    const res = await fetch(`${API}/api/${action}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success) notif(data.message);
+    else notif('Erreur: ' + data.message, 'error');
+  } catch (e) {
+    notif('Bot non connecté ! Lance node api.js', 'error');
+  }
+}
+
+// ===================== DELETE USER MESSAGES =====================
+async function deleteUserMessages() {
+  if (!selectedGuildId) return notif('Choisis un serveur d\'abord', 'error');
+  const userId = getVal('mDeleteUserId').trim();
+  if (!userId) return notif('Entre un ID utilisateur', 'error');
+  if (!confirm(`Supprimer TOUS les messages de l'utilisateur ${userId} dans tous les salons ?`)) return;
+  if (!confirm('Dernière chance. Confirmer ?')) return;
+
+  try {
+    const res = await fetch(`${API}/api/deleteusermessages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, guildId: selectedGuildId })
+    });
+    const data = await res.json();
+    if (data.success) notif(data.message);
+    else notif('Erreur: ' + data.message, 'error');
+  } catch (e) {
+    notif('Bot non connecté ! Lance node api.js', 'error');
+  }
+}
+
+// ===================== BACKUP =====================
+async function createBackup() {
+  if (!selectedGuildId) return notif('Choisis un serveur d\'abord', 'error');
+  const name = getVal('backupName') || undefined;
+  try {
+    const res = await fetch(`${API}/api/backup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, guildId: selectedGuildId })
+    });
+    const data = await res.json();
+    if (data.success) { notif(`Backup créée: ${data.backup.name}`); loadBackups(); }
+    else notif('Erreur: ' + data.message, 'error');
+  } catch (e) { notif('Bot non connecté ! Lance node api.js', 'error'); }
+}
+
+async function loadBackups() {
+  try {
+    const res = await fetch(`${API}/api/backups`);
+    const data = await res.json();
+    const list = document.getElementById('backupList');
+    if (!data.backups || data.backups.length === 0) {
+      list.innerHTML = '<div class="empty-state">Aucune sauvegarde</div>';
+      return;
+    }
+    list.innerHTML = data.backups.map(b => `
+      <div class="backup-item">
+        <div class="backup-info">
+          <span class="backup-name">📁 ${b.name}</span>
+          <span class="backup-date">${b.createdAt ? new Date(b.createdAt).toLocaleDateString('fr-FR') : ''} • ${b.channels || 0} salons • ${b.messages || 0} messages</span>
+        </div>
+        <button onclick="restoreBackup('${b.name}')" class="dash-btn blue">Restaurer</button>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('backupList').innerHTML = '<div class="empty-state">Bot non connecté</div>';
+  }
+}
+
+async function restoreBackup(name) {
+  if (!selectedGuildId) return notif('Choisis un serveur d\'abord', 'error');
+  if (!confirm(`Restaurer "${name}" ? Les salons actuels seront supprimés.`)) return;
+  try {
+    const res = await fetch(`${API}/api/restore`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, guildId: selectedGuildId })
+    });
+    const data = await res.json();
+    if (data.success) notif('Serveur restauré !');
+    else notif('Erreur: ' + data.message, 'error');
+  } catch (e) { notif('Bot non connecté', 'error'); }
+}
+
+async function saveNukeOwnerId() {
+  if (!selectedGuildId) return;
+  const val = document.getElementById('nukeOwnerId')?.value?.trim() || null;
+  currentConfig.nukeOwnerId = val;
+  try {
+    await fetch(`${API}/api/config`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guildId: selectedGuildId, nukeOwnerId: val })
+    });
+  } catch (e) {}
+}
+
+async function nukeServer() {
+  if (!selectedGuildId) return notif('Choisis un serveur d\'abord', 'error');
+  const ownerInput = document.getElementById('nukeOwnerId');
+  const ownerId = ownerInput ? ownerInput.value.trim() : '';
+  if (!ownerId) return notif('Entre l\'ID Discord du propriétaire (👑)', 'error');
+  if (!confirm('⚠️ ATTENTION ⚠️\nSupprimer TOUS les salons ?')) return;
+  if (!confirm('DERNIÈRE CHANCE. Nuke le serveur ?')) return;
+  try {
+    const res = await fetch(`${API}/api/nuke`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guildId: selectedGuildId, userId: ownerId })
+    });
+    const data = await res.json();
+    if (data.success) notif(`Nuke fait ! Backup: ${data.backup}`);
+    else notif('Erreur: ' + data.message, 'error');
+  } catch (e) { notif('Bot non connecté', 'error'); }
+}
+
+// ===================== AVATAR UPLOAD =====================
+async function uploadAvatar() {
+  const input = document.getElementById('avatarUpload');
+  const file = input.files[0];
+  if (!file) return notif('Choisis une image', 'error');
+  
+  try {
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onload = async function() {
+      const base64 = reader.result;
+      
+      const res = await fetch(`${API}/api/avatar/upload`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64, filename: file.name })
+      });
+      const data = await res.json();
+      if (data.success) {
+        notif('Avatar mis à jour !');
+        // Update all avatar images
+        const imgs = document.querySelectorAll('.nav-logo-img, .nav-avatar, .welcome-avatar, .dash-server-icon, #currentAvatar');
+        imgs.forEach(el => el.src = data.path + '?' + Date.now());
+      } else {
+        notif('Erreur: ' + data.message, 'error');
+      }
+    };
+    reader.readAsDataURL(file);
+  } catch (e) {
+    notif('Erreur upload', 'error');
+  }
+}
+
+// ===================== CUSTOM COMMANDS =====================
+function addCustomCmd() {
+  const name = getVal('customCmdName').trim();
+  const response = getVal('customCmdResponse').trim();
+  if (!name || !response) return notif('Remplis les deux champs', 'error');
+  customCommands.push({ name, response });
+  document.getElementById('customCmdName').value = '';
+  document.getElementById('customCmdResponse').value = '';
+  renderCustomCmds();
+  saveConfig();
+  notif('Commande !' + name + ' créée !');
+}
+
+function deleteCustomCmd(index) {
+  customCommands.splice(index, 1);
+  renderCustomCmds();
+  saveConfig();
+}
+
+function renderCustomCmds() {
+  const list = document.getElementById('customCmdList');
+  if (customCommands.length === 0) {
+    list.innerHTML = '<h4>📋 Commandes existantes</h4><div class="empty-state">Aucune commande custom.</div>';
+  } else {
+    list.innerHTML = '<h4>📋 Commandes existantes</h4>' + customCommands.map((cmd, i) => 
+      `<div class="custom-cmd-item"><span class="cmd-name">!${cmd.name}</span><span class="cmd-desc">${cmd.response}</span><button onclick="deleteCustomCmd(${i})" class="cmd-delete">✕</button></div>`
+    ).join('');
+  }
+}
+
+// ===================== STATS =====================
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/api/stats`);
+    if (!res.ok) throw new Error('API offline');
+    const data = await res.json();
+    document.getElementById('dashServers').textContent = data.servers || 0;
+    document.getElementById('dashUsers').textContent = data.users || 0;
+  } catch (e) {
+    document.getElementById('dashServers').textContent = '0';
+    document.getElementById('dashUsers').textContent = '0';
+  }
+  
+  if (!selectedGuildId) return;
+  try {
+    const res = await fetch(`${API}/api/server?guildId=${selectedGuildId}`);
+    if (!res.ok) throw new Error('API offline');
+    const data = await res.json();
+    if (data.name) {
+      document.getElementById('serverName').textContent = data.name;
+      document.getElementById('serverGreeting').textContent = `Gère **${data.name}** depuis ici.`;
+    }
+    document.getElementById('dashChannels').textContent = data.channels?.length || 0;
+    document.getElementById('dashRoles').textContent = data.roles?.length || 0;
+  } catch (e) {
+    document.getElementById('serverName').textContent = 'Kycks Bot';
+    document.getElementById('serverGreeting').textContent = 'Connecte le bot pour gérer ton serveur.';
+    document.getElementById('dashChannels').textContent = '0';
+    document.getElementById('dashRoles').textContent = '0';
+  }
+}
+
+// ===================== RECORDING STATUS =====================
+async function checkRecordingStatus() {
+  try {
+    const res = await fetch(`${API}/api/recordings/status`);
+    const data = await res.json();
+    updateRecordingStatus(data);
+  } catch {}
+}
+
+function updateRecordingStatus(data) {
+  const card = document.getElementById('recordingStatusCard');
+  const status = document.getElementById('recordingStatus');
+  if (!card || !status) return;
+
+  if (data.recordings && data.recordings.length > 0) {
+    card.style.display = 'block';
+    const r = data.recordings[0];
+    const mins = Math.floor(r.duration / 60);
+    const secs = r.duration % 60;
+    status.innerHTML = `🔴 <strong>Enregistrement actif</strong><br>📍 Salon: ${r.voiceChannel}<br>⏱️ Durée: ${mins}m ${secs}s<br>📊 Frames: ${r.frameCount}`;
+  } else {
+    card.style.display = 'none';
+  }
+}
+
+setInterval(checkRecordingStatus, 5000);
+
+// ===================== TABS =====================
+function showTab(tab) {
+  if (hasUnsaved) {
+    if (!confirm('⚠️ Tu as des modifications non enregistrées.\nQuitter quand même ?')) return;
+    markSaved();
+  }
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dash-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  
+  const titles = {
+    accueil: 'Panel de Contrôle', general: '⚙️ Général', welcome: '👋 Bienvenue',
+    automod: '🤖 Automod', moderation: '🛡️ Modération', tickets: '🎫 Tickets',
+    levels: '📈 Niveaux', music: '🎵 Musique', autorole: '🎭 Autorole',
+    logs: '📋 Logs', custom: '✨ Commandes Custom', starboard: '⭐ Starboard',
+    reactionrole: '🎭 Reaction Role', voicerecord: '🎙️ Enregistrement Vocal',
+    backup: '💾 Backup & Nuke'
+  };
+  document.getElementById('panelTitle').textContent = titles[tab] || 'Panel de Contrôle';
+}
+
+// ===================== AUTO-SAVE =====================
+let hasUnsaved = false;
+let saveTimeout = null;
+
+window.addEventListener('beforeunload', (e) => {
+  if (hasUnsaved) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+function markUnsaved() {
+  hasUnsaved = true;
+  const bar = document.getElementById('saveBar');
+  const icon = document.getElementById('saveBarIcon');
+  const text = document.getElementById('saveBarText');
+  bar.className = 'save-bar unsaved';
+  icon.textContent = '⚠️';
+  text.textContent = 'Non enregistré — modifications en attente...';
+}
+
+function markSaving() {
+  const bar = document.getElementById('saveBar');
+  const icon = document.getElementById('saveBarIcon');
+  const text = document.getElementById('saveBarText');
+  bar.className = 'save-bar saving';
+  icon.textContent = '⏳';
+  text.textContent = 'Enregistrement en cours...';
+}
+
+function markSaved() {
+  hasUnsaved = false;
+  const bar = document.getElementById('saveBar');
+  const icon = document.getElementById('saveBarIcon');
+  const text = document.getElementById('saveBarText');
+  bar.className = 'save-bar';
+  icon.textContent = '✅';
+  text.textContent = 'Enregistré';
+}
+
+document.addEventListener('change', (e) => {
+  const el = e.target;
+  if (el.id && el.id.startsWith('cfg_')) {
+    markUnsaved();
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(async () => {
+      markSaving();
+      await saveConfig();
+      markSaved();
+    }, 500);
+  }
+});
+
+// ===================== NOTIFICATION =====================
+function notif(msg, type='success') {
+  const n = document.getElementById('notif');
+  document.getElementById('notifText').textContent = msg;
+  n.className = 'notification ' + type;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3000);
+}
+</script>
+
+</body>
+</html>
