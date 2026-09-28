@@ -133,7 +133,7 @@
   <p class="copyright">© 2026 Kycks Bot • Tous droits réservés</p>
 </footer>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="/socket.io/socket.io.js" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdn.socket.io/4.7.5/socket.io.min.js';document.head.appendChild(s);"></script>
 <script>
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -143,15 +143,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Live stats via Socket.IO
-const socket = io();
-
-socket.on('botStatus', (data) => {
-  if (data.online) {
-    document.getElementById('statServers').textContent = (data.servers || 1) + '+';
-    document.getElementById('statUsers').textContent = data.users >= 1000 ? Math.floor(data.users/1000) + 'k+' : (data.users || 1) + '+';
-  }
-});
+// Live stats via Socket.IO (ignoré hors serveur, ex: GitHub Pages)
+const isStaticHost = window.location.hostname.endsWith('github.io');
+if (!isStaticHost && typeof io !== 'undefined') {
+  const socket = io();
+  socket.on('botStatus', (data) => {
+    if (data.online) {
+      document.getElementById('statServers').textContent = (data.servers || 1) + '+';
+      document.getElementById('statUsers').textContent = data.users >= 1000 ? Math.floor(data.users/1000) + 'k+' : (data.users || 1) + '+';
+    }
+  });
+}
 
 // Fallback: try API directly
 async function loadRealStats() {
